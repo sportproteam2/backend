@@ -1,0 +1,7 @@
+db.sqlite3
+venv
+.env
+sportpro/__pycache__
+sportpro_app/__pycache__
+sportpro/.env
+user/__pycache__
