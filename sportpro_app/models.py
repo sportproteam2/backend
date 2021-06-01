@@ -21,6 +21,7 @@ class News(models.Model):
 
 
 
+
 class Federation(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название")
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
