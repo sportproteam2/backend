@@ -210,3 +210,31 @@ class MatchesDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class NewsBySportCategoryAPIView(generics.RetrieveAPIView):
+
+#     model = News
+#     queryset = SportCategory.objects.all()
+#     lookup_field = "pk"
+
+
+#     def get(self, request, *args, **kwargs):
+#         instance = self.get_object()
+#         categories = News.objects.filter(sportcategory = instance.id)
+#         serializer = NewsSerializer(categories, many = True)
+#         return Response(serializer.data)
+
+
+class SportBySportCategoryAPIView(generics.RetrieveAPIView):
+
+    model = SportCategory
+    queryset = SportCategory.objects.all()
+    lookup_field = "pk"
+
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        categories = Sport.objects.filter(category = instance.id)
+        serializer = SportSerializer(categories, many = True)
+        return Response(serializer.data)

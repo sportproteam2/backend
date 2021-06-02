@@ -4,10 +4,14 @@ from django.db.models.fields.related import OneToOneField
 
 
 
+class SportCategory(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Категория вида спорта')
+
+
 class Sport(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
     description = models.CharField(max_length=255, verbose_name='Описание')
-
+    category = models.ForeignKey(SportCategory, on_delete=models.CASCADE, verbose_name='Категория спорта')
 
 
 

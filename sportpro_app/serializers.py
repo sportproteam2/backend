@@ -4,21 +4,31 @@ from .models import *
 from user.models import *
 
 
+class SportCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SportCategory
+        fields = ['id', 'name']
+
+
 class NewsSerializer(serializers.ModelSerializer):
 
+    sportcategory = SportCategorySerializer(many = False)
     author = serializers.PrimaryKeyRelatedField(queryset = Editor.objects.all())
     sport = serializers.PrimaryKeyRelatedField(queryset = Sport.objects.all())
 
     class Meta:
         model = News
-        fields = ['id', 'title', 'article', 'author', 'photo', 'dateofadd', 'sport']
+        fields = ['id', 'title', 'article', 'author', 'photo', 'dateofadd', 'sport', 'sportcategory']
 
 
 class SportSerializer(serializers.ModelSerializer):
 
+    category = SportCategorySerializer(many = False)
+
     class Meta:
         model = Sport
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'name', 'description', 'category']
 
 
 class FederationSerializer(serializers.ModelSerializer):
