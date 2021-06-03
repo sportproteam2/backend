@@ -212,18 +212,18 @@ class MatchesDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class NewsBySportCategoryAPIView(generics.RetrieveAPIView):
+class NewsBySportAPIView(generics.RetrieveAPIView):
 
-#     model = News
-#     queryset = SportCategory.objects.all()
-#     lookup_field = "pk"
+    model = Sport
+    queryset = Sport.objects.all()
+    lookup_field = "pk"
 
 
-#     def get(self, request, *args, **kwargs):
-#         instance = self.get_object()
-#         categories = News.objects.filter(sportcategory = instance.id)
-#         serializer = NewsSerializer(categories, many = True)
-#         return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        sport = News.objects.filter(sport = instance.id)
+        serializer = NewsSerializer(sport, many = True)
+        return Response(serializer.data)
 
 
 class SportBySportCategoryAPIView(generics.RetrieveAPIView):
@@ -238,3 +238,33 @@ class SportBySportCategoryAPIView(generics.RetrieveAPIView):
         categories = Sport.objects.filter(category = instance.id)
         serializer = SportSerializer(categories, many = True)
         return Response(serializer.data)
+
+
+class SportByFederationAPIView(generics.RetrieveAPIView):
+
+    model = SportCategory
+    queryset = SportCategory.objects.all()
+    lookup_field = "pk"
+
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        federations = Sport.objects.filter(federation = instance.id)
+        serializer = SportSerializer(federations, many = True)
+        return Response(serializer.data)
+
+
+class FederationBySportCategoryAPIView(generics.RetrieveAPIView):
+
+    model = SportCategory
+    queryset = SportCategory.objects.all()
+    lookup_field = "pk"
+
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        categories = Federation.objects.filter(category = instance.id)
+        serializer = SportSerializer(categories, many = True)
+        return Response(serializer.data)
+
+

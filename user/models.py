@@ -4,7 +4,8 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
 from django.db import models
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, PermissionsMixin) 
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, PermissionsMixin)
+from django.db.models.fields.related import OneToOneField 
 import jwt
 from django.core.mail import send_mail
 
@@ -70,13 +71,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Отредактирован')
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'name', 'surname', 'phone', 'role']
 
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return self.name
 
     @property
     def token(self):
@@ -95,12 +97,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Editor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Редактор')
 
+    def __str__(self):
+        return self.user.name
+
 
 class Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Админ Федерации')
-    FederationID = models.ForeignKey("sportpro_app.Federation", on_delete=models.CASCADE, verbose_name='Федерация')
+
+    def __str__(self):
+        return self.user.name
 
 
 class Trainer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Тренер')
     is_approved = models.BooleanField(default=False, verbose_name='Одобрен')
+
+    def __str__(self):
+        return self.user.name

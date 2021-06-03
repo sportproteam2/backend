@@ -66,8 +66,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RoleSerializer(serializers.ModelSerializer):
+    # name = serializers.SerializerMethodField("get_name")
+    name = serializers.ReadOnlyField(source='get_name_display')
 
     class Meta:
         model = Role
         fields = ['id', 'name']
+
+    # def get_name(self):
+        # return self.get_name_display
 
