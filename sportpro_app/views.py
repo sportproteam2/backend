@@ -48,9 +48,9 @@ class NewsDetail(APIView):
 class SportsAPIView(APIView):
     def get(self, request):
         sport = Sport.objects.all()
-        sportcategory_id = request.query_params.get("sportcategory_id", None)
-        if sportcategory_id is not None:
-            sport = sport.filter(sportcategory=sportcategory_id)
+        category_id = request.query_params.get("category_id", None)
+        if category_id is not None:
+            sport = sport.filter(sportcategory=category_id)
         serializer = SportSerializer(sport, many = True)
         return Response(serializer.data)
 
