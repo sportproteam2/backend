@@ -50,7 +50,7 @@ class SportsAPIView(APIView):
         sport = Sport.objects.all()
         category_id = request.query_params.get("category_id", None)
         if category_id is not None:
-            sport = sport.filter(sportcategory=category_id)
+            sport = sport.filter(category=category_id)
         serializer = SportSerializer(sport, many = True)
         return Response(serializer.data)
 
