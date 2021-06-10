@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from decouple import config
+import environ
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 import django_heroku
 import dj_database_url
 
@@ -23,10 +26,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG')
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -94,18 +97,11 @@ AUTH_USER_MODEL = 'user.User'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('NAME'),                      
-        'USER': config('USER'),
-        'PASSWORD': config('PASSWORD'),
-        'HOST': config('HOST'),
-        'PORT': config('PORT'),
-}
+    'default': env.db(),
 }
 
 # DATABASES = {
-#     'default': dj_database_url.config()
+#     'default': dj_database_url.env()
 # }
 
 
