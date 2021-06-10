@@ -11,6 +11,9 @@ from .serializers import *
 class NewsAPIView(APIView):
     def get(self, request):
         news = News.objects.all()
+        sport_id = request.query_params.get("sport_id", None)
+        if sport_id is not None:
+            news = news.filter(sport=sport_id)
         serializer = NewsSerializer(news, many = True)
         return Response(serializer.data)
 
@@ -45,6 +48,9 @@ class NewsDetail(APIView):
 class SportsAPIView(APIView):
     def get(self, request):
         sport = Sport.objects.all()
+        sportcategory_id = request.query_params.get("sportcategory_id", None)
+        if sportcategory_id is not None:
+            sport = sport.filter(sportcategory=sportcategory_id)
         serializer = SportSerializer(sport, many = True)
         return Response(serializer.data)
 
@@ -113,6 +119,9 @@ class FederationsDetail(APIView):
 class PlayersAPIView(APIView):
     def get(self, request):
         player = Player.objects.all()
+        sport_id = request.query_params.get("sport_id", None)
+        if sport_id is not None:
+            player = player.filter(sport=sport_id)
         serializer = PlayerSerializer(player, many = True)
         return Response(serializer.data)
 
@@ -147,6 +156,9 @@ class PlayersDetail(APIView):
 class EventsAPIView(APIView):
     def get(self, request):
         event = Event.objects.all()
+        sport_id = request.query_params.get("sport_id", None)
+        if sport_id is not None:
+            event = event.filter(sport=sport_id)
         serializer = EventSerializer(event, many = True)
         return Response(serializer.data)
 
@@ -212,59 +224,59 @@ class MatchesDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class NewsBySportAPIView(generics.RetrieveAPIView):
+# class NewsBySportAPIView(generics.RetrieveAPIView):
 
-    model = Sport
-    queryset = Sport.objects.all()
-    lookup_field = "pk"
-
-
-    def get(self, request, *args, **kwargs):
-        instance = self.get_object()
-        sport = News.objects.filter(sport = instance.id)
-        serializer = NewsSerializer(sport, many = True)
-        return Response(serializer.data)
+#     model = Sport
+#     queryset = Sport.objects.all()
+#     lookup_field = "pk"
 
 
-class SportBySportCategoryAPIView(generics.RetrieveAPIView):
-
-    model = SportCategory
-    queryset = SportCategory.objects.all()
-    lookup_field = "pk"
-
-
-    def get(self, request, *args, **kwargs):
-        instance = self.get_object()
-        categories = Sport.objects.filter(category = instance.id)
-        serializer = SportSerializer(categories, many = True)
-        return Response(serializer.data)
+#     def get(self, request, *args, **kwargs):
+#         instance = self.get_object()
+#         sport = News.objects.filter(sport = instance.id)
+#         serializer = NewsSerializer(sport, many = True)
+#         return Response(serializer.data)
 
 
-class SportByFederationAPIView(generics.RetrieveAPIView):
+# class SportBySportCategoryAPIView(generics.RetrieveAPIView):
 
-    model = SportCategory
-    queryset = SportCategory.objects.all()
-    lookup_field = "pk"
-
-
-    def get(self, request, *args, **kwargs):
-        instance = self.get_object()
-        federations = Sport.objects.filter(federation = instance.id)
-        serializer = SportSerializer(federations, many = True)
-        return Response(serializer.data)
+#     model = SportCategory
+#     queryset = SportCategory.objects.all()
+#     lookup_field = "pk"
 
 
-class FederationBySportCategoryAPIView(generics.RetrieveAPIView):
+#     def get(self, request, *args, **kwargs):
+#         instance = self.get_object()
+#         categories = Sport.objects.filter(category = instance.id)
+#         serializer = SportSerializer(categories, many = True)
+#         return Response(serializer.data)
 
-    model = SportCategory
-    queryset = SportCategory.objects.all()
-    lookup_field = "pk"
+
+# class SportByFederationAPIView(generics.RetrieveAPIView):
+
+#     model = SportCategory
+#     queryset = SportCategory.objects.all()
+#     lookup_field = "pk"
 
 
-    def get(self, request, *args, **kwargs):
-        instance = self.get_object()
-        categories = Federation.objects.filter(category = instance.id)
-        serializer = SportSerializer(categories, many = True)
-        return Response(serializer.data)
+#     def get(self, request, *args, **kwargs):
+#         instance = self.get_object()
+#         federations = Sport.objects.filter(federation = instance.id)
+#         serializer = SportSerializer(federations, many = True)
+#         return Response(serializer.data)
+
+
+# class FederationBySportCategoryAPIView(generics.RetrieveAPIView):
+
+#     model = SportCategory
+#     queryset = SportCategory.objects.all()
+#     lookup_field = "pk"
+
+
+#     def get(self, request, *args, **kwargs):
+#         instance = self.get_object()
+#         categories = Federation.objects.filter(category = instance.id)
+#         serializer = SportSerializer(categories, many = True)
+#         return Response(serializer.data)
 
 

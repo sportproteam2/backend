@@ -16,7 +16,6 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 import django_heroku
-import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -79,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'sportpro.wsgi.application'
+WSGI_APPLICATION = 'sportpro.wsgi.application'
 
 
 REST_FRAMEWORK = {
@@ -96,6 +95,16 @@ AUTH_USER_MODEL = 'user.User'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env('NAME'),                      
+#         'USER': env('USER'),
+#         'PASSWORD': env('PASSWORD'),
+#         'HOST': env('HOST'),
+#         'PORT': env('PORT'),
+#     }
+# }
 DATABASES = {
     'default': env.db(),
 }

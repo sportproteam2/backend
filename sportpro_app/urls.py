@@ -16,9 +16,9 @@ urlpatterns = [
     path('api/event/<int:pk>', EventsDetail.as_view()),
     path('api/matches', MatchesAPIView.as_view()),
     path('api/matches/<int:pk>', MatchesDetail.as_view()),
-    path('api/sportbycategories/<int:pk>/', SportBySportCategoryAPIView.as_view()),
-    path('api/sportbyfederations/<int:pk>/', SportByFederationAPIView.as_view()),
-    path('api/federationbycategories/<int:pk>', FederationBySportCategoryAPIView.as_view()),
-    path('api/newsbysport/<int:pk>', NewsBySportAPIView.as_view()),
+    # path('api/sportbycategories/<int:pk>/', SportBySportCategoryAPIView.as_view()),
+    # path('api/sportbyfederations/<int:pk>/', SportByFederationAPIView.as_view()),
+    # path('api/federationbycategories/<int:pk>', FederationBySportCategoryAPIView.as_view()),
+    # path('api/newsbysport/<int:pk>', NewsBySportAPIView.as_view()),
 ]
 
