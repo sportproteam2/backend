@@ -10,6 +10,10 @@ class SportCategory(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _("Категория Спорта")
+        verbose_name_plural = _("Категории Спорта")
+
 
 class Sport(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
@@ -18,6 +22,10 @@ class Sport(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _("Вид Спорта")
+        verbose_name_plural = _("Виды Спорта")
 
 
 
@@ -34,13 +42,10 @@ class News(models.Model):
 
     
     class Meta:
-        verbose_name = _("News")
-        verbose_name_plural = _("News")
+        verbose_name = _("Новости")
+        verbose_name_plural = _("Новости")
     
     
-
-
-
 
 class Federation(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название")
@@ -54,7 +59,9 @@ class Federation(models.Model):
     def __str__(self):
         return self.name
 
-
+    class Meta:
+        verbose_name = _("Федерация Спорта")
+        verbose_name_plural = _("Федерации Спорта")
 
 
 class Player(models.Model):
@@ -70,7 +77,9 @@ class Player(models.Model):
     def __str__(self):
         return self.surname
 
-
+    class Meta:
+        verbose_name = _("Спортсмен")
+        verbose_name_plural = _("Спортсмены")
 
 
 class Event(models.Model):
@@ -87,7 +96,9 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
-
+    class Meta:
+        verbose_name = _("Соревнования")
+        verbose_name_plural = _("Соревнования")
 
 
 class Matches(models.Model):
@@ -101,4 +112,6 @@ class Matches(models.Model):
     def __str__(self):
         return f'{self.player1} - {self.player2}'
 
-
+    class Meta:
+        verbose_name = _("Матч")
+        verbose_name_plural = _("Матчи")

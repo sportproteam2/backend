@@ -8,6 +8,7 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, Permi
 from django.db.models.fields.related import OneToOneField 
 import jwt
 from django.core.mail import send_mail
+from django.utils.translation import ugettext_lazy as _
 
 
 
@@ -58,6 +59,10 @@ class Role(models.Model):
 
     name = models.IntegerField(choices = CHOICES, default = 1)
 
+    class Meta:
+        verbose_name = _("Роль")
+        verbose_name_plural = _("Роли")
+
 
 class User(AbstractBaseUser, PermissionsMixin):
 
@@ -93,12 +98,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         }, settings.SECRET_KEY, algorithm='HS256')
         return token
 
+    class Meta:
+        verbose_name = _("Пользователь")
+        verbose_name_plural = _("Пользователи")
+
 
 class Editor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Редактор')
 
     def __str__(self):
         return self.user.name
+
+    class Meta:
+        verbose_name = _("Редактор")
+        verbose_name_plural = _("Редакторы")
 
 
 class Admin(models.Model):
@@ -107,6 +120,10 @@ class Admin(models.Model):
     def __str__(self):
         return self.user.name
 
+    class Meta:
+        verbose_name = _("Представитель Федерации")
+        verbose_name_plural = _("Представители Федерации")
+
 
 class Trainer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Тренер')
@@ -114,3 +131,7 @@ class Trainer(models.Model):
 
     def __str__(self):
         return self.user.name
+
+    class Meta:
+        verbose_name = _("Тренер")
+        verbose_name_plural = _("Тренеры")

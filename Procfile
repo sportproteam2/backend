@@ -1,1 +1,1 @@
-web: gunicorn Sportpro.wsgi:application --log-file -
+web: gunicorn sportpro.wsgi:application --log-file -

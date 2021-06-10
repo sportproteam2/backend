@@ -30,6 +30,13 @@ class SportSerializer(serializers.ModelSerializer):
         model = Sport
         fields = ['id', 'name', 'description', 'category']
 
+    def create(self, validated_data):
+        category = validated_data.pop('category')
+        obj, _ = SportCategory.objects.get_or_create(name = category.get('name'))
+        validated_data["category"] = obj
+        return super().create(validated_data)
+
+
 
 class FederationSerializer(serializers.ModelSerializer):
 
