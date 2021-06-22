@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+# from corsheaders.defaults import default_methods
 import os
 import environ
 # Initialise environment variables
@@ -62,16 +62,37 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:9000"
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "https://example.com",
+#     "https://sub.example.com",
+#     "http://localhost:8080",
+#     "http://127.0.0.1:9000"
+# ]
 
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://\w+\.api\.com$",
-]
+# CORS_ALLOWED_ORIGIN_REGEXES = [
+#     r"^https://\w+\.api\.com$",
+# ]
+
+# CORS_ALLOW_METHODS = [
+#     'DELETE',
+#     'GET',
+#     'OPTIONS',
+#     'PATCH',
+#     'POST',
+#     'PUT',
+# ]
+
+# CORS_ALLOW_HEADERS  =  [ 
+#     'accept' , 
+#     'accept-encoding' , 
+#     'authorization' , 
+#     'content-type' , 
+#     'dnt' , 
+#     'origin' , 
+#     'user-agent' , 
+#     'x-csrftoken' , 
+#     'x-requested-with' , 
+# ]
 
 
 
