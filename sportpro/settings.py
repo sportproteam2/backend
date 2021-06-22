@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'jwt',
     'tabular_permissions',
     'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [

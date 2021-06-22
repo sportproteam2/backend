@@ -11,5 +11,6 @@ router.register("api/federation", views.FederationiewSet)
 router.register("api/players", views.PlayersViewSet)
 router.register("api/event", views.EventViewSet)
 router.register("api/matches", views.MatchesViewSet)
+router.register("api/sportcategory", views.SportCategoryViewSet)
 
 urlpatterns = router.urls
