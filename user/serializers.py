@@ -1,69 +1,90 @@
+from sportpro_app.models import Federation
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import User, Role
+from .models import Admin, Editor, Judge, Trainer, User, Role
+from rest_framework.authtoken.models import Token
+from firebase_admin import auth
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
+    """Serializers registration requests and creates a new user."""
 
+    # Ensure passwords are at least 8 characters long, no longer than 128
+    # characters, and can not be read by the client.
     password = serializers.CharField(
         max_length=128,
         min_length=8,
         write_only=True
     )
 
+    # The client should not be able to send a token along with a registration
+    # request. Making `token` read-only handles that for us.
     token = serializers.CharField(max_length=255, read_only=True)
 
     class Meta:
         model = User
-        fields = ['name', 'surname', 'phone', 'email', 'username', 'role', 'password', 'token']
+        # List all of the fields that could possibly be included in a request
+        # or response, including fields specified explicitly above.
+        fields = ['name', 'surname', 'phone', 'username', 'role', 'password', 'token']
 
     def create(self, validated_data):
+        # Use the `create_user` method we wrote earlier to create a new user.
         return User.objects.create_user(**validated_data)
 
+
 class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=255)
-    username = serializers.CharField(max_length=255, read_only=True)
-    password = serializers.CharField(max_length=128, write_only=True)
+    phone = serializers.CharField(max_length=255, write_only=True)
+    # id_token = serializers.CharField(write_only=True)
     token = serializers.CharField(max_length=255, read_only=True)
 
     def validate(self, data):
+        # id_token = data.get('id_token')
+        phone = data.get('phone', None)
 
-        email = data.get('email', None)
-        password = data.get('password', None)
+        # decoded_token = auth.verify_id_token(id_token)
+        # uid = decoded_token['uid']
+        # print(uid)
 
-        if email is None:
+        try:
+            user = User.objects.get(phone=phone)
+        except User.DoesNotExist:
             raise serializers.ValidationError(
-                'An email address is required to log in.'
-            )
+                "A user with this phone number does not exist")
 
-        if password is None:
-            raise serializers.ValidationError(
-                'A password is required to log in.'
-            )
-        user = authenticate(username=email, password=password)
-        if user is None:
-            raise serializers.ValidationError(
-                'A user with this email and password was not found.'
-            )
-        if not user.is_active:
-            raise serializers.ValidationError(
-                'This user has been deactivated.'
-            )
-
+        token, _ = Token.objects.get_or_create(user=user)
         return {
-            'email': user.email,
-            'username': user.username,
-            'token': user.token
+            'token': token
         }
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """Handles serialization and deserialization of User objects."""
+    password = serializers.CharField(
+        max_length=128,
+        min_length=8,
+        write_only=True
+    )
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'username','name','surname','phone','role', 'password', )
+        fields = ('id', 'username', 'name', 'surname', 'phone', 'role', 'password', )
         read_only_fields = ('token',)
 
+    def update(self, instance, validated_data):
+        """Performs an update on a User."""
+        password = validated_data.pop('password', None)
+
+        for (key, value) in validated_data.items():
+            # For the keys remaining in `validated_data`, we will set them on
+            # the current `User` instance one at a time.
+            setattr(instance, key, value)
+
+        if password is not None:
+            # `.set_password()`  handles all
+            # of the security stuff that we shouldn't be concerned with.
+            instance.set_password(password)
+
+        return instance
 
 class RoleSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField("get_name")
@@ -76,3 +97,35 @@ class RoleSerializer(serializers.ModelSerializer):
     def get_name(self):
         return self.get_name_display
 
+
+class AdminSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    federation = serializers.PrimaryKeyRelatedField(queryset=Federation.objects.all())
+
+    class Meta:
+        model = Admin
+        fields = ['id', 'user', 'federation']
+
+
+class TrainerSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Trainer
+        fields = ['id', 'user', 'is_approved']
+
+
+class EditorSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Editor
+        fields = ['id', 'user']
+
+
+class JudgeSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Judge
+        fields = ['id', 'user', 'experience']

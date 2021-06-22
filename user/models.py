@@ -13,38 +13,34 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class UserManager(BaseUserManager):
+    """
+    Django requires that custom users define their own Manager class. By
+    inheriting from `BaseUserManager`, we get a lot of the same code used by
+    Django to create a `User`. 
+    All we have to do is override the `create_user` function which we will use
+    to create `User` objects.
+    """
 
-    def create_user(self, username, name, surname, phone, email, role, password=None):
-
-        if username is None:
-            raise TypeError('Users must have a username.')
-
-        if email is None:
-            raise TypeError('Users must have an email address.')
-
-        if name is None or surname is None:
-            raise TypeError('Users must have a name.')
+    def create_user(self, phone, password):
+        """Create and return a `User` with an email, username and password."""
 
         if phone is None:
             raise TypeError('Users must have a phone.')
 
-        user = self.model(username=username, name=name, surname=surname, phone=phone, role=role, email=self.normalize_email(email))
+        user = self.model(phone=phone)
         user.set_password(password)
-        user.is_staff = True
+        user.save()
+
         return user
 
-    def create_superuser(self, name, surname, username, password, phone, email, role):
- 
-        if password is None:
-            raise TypeError('Superusers must have a password.')
-
-        if username is None:
-            raise TypeError('Superusers must have a username.')
-
-        role_obj = Role.objects.get(id=role)
-
-        user = self.create_user(username=username, email=email, password=password, phone=phone, role=role_obj, name=name, surname=surname)
+    def create_superuser(self, phone, password):
+        """
+        Create and return a `User` with superuser (admin) permissions.
+        """
+        
+        user = self.create_user(phone=phone, password=password)
         user.is_superuser = True
+        user.is_staff = True
         user.save()
 
         return user
@@ -52,13 +48,7 @@ class UserManager(BaseUserManager):
 
 class Role(models.Model):
 
-    CHOICES = [
-        (1, 'Editor'),
-        (2, 'Admin'),
-        (3, 'Trainer'),]
-
-    name = models.IntegerField(choices = CHOICES, default = 1)
-
+    name = models.CharField(max_length=255, verbose_name='Роль', unique = True)
     class Meta:
         verbose_name = _("Роль")
         verbose_name_plural = _("Роли")
@@ -67,23 +57,22 @@ class Role(models.Model):
 class User(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(db_index=True, max_length=255, unique=True, verbose_name='Никнейм')
-    email = models.EmailField(db_index=True, unique=True, verbose_name="Электронная почта")
     name = models.CharField(max_length = 255, verbose_name="Имя")
     surname = models.CharField(max_length = 255, verbose_name='Фамилия')
-    role = models.ForeignKey(Role, on_delete = models.CASCADE, related_name='role', verbose_name="Роль")
-    phone = models.CharField(max_length = 255, verbose_name='Номер телефона')
+    role = models.ForeignKey(Role, on_delete = models.SET_NULL, related_name='role', verbose_name="Роль", null=True)
+    phone = models.CharField(max_length = 255, verbose_name='Номер телефона', unique=True)
+    age = models.IntegerField(verbose_name='Возраст', default=18)
     is_active = models.BooleanField(default=True, verbose_name='Активный аккаунт')
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Отредактирован')
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'name', 'surname', 'phone', 'role']
+    USERNAME_FIELD = 'phone'
 
     objects = UserManager()
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.name
 
     @property
     def token(self):
@@ -135,3 +124,15 @@ class Trainer(models.Model):
     class Meta:
         verbose_name = _("Тренер")
         verbose_name_plural = _("Тренеры")
+
+
+class Judge(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Судья')
+    experience = models.IntegerField(verbose_name='Опыт работы', default=3)
+
+    def __str__(self):
+        return self.user.name
+
+    class Meta:
+        verbose_name = _("Судья")
+        verbose_name_plural = _("Судьи")
