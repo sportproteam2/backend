@@ -129,7 +129,7 @@ class SportViewSet(viewsets.ModelViewSet):
 
 
 class FederationiewSet(viewsets.ModelViewSet):
-    permission_classes = [AllowAny, AdminAccessPermission]
+    # permission_classes = [AllowAny, AdminAccessPermission]
     queryset = Federation.objects.all()
     serializer_class = FederationSerializer
 
