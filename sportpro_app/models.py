@@ -33,7 +33,7 @@ class Sport(models.Model):
 class News(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     article = models.TextField(max_length=1000, verbose_name='Текст новости')
-    author = models.ForeignKey('user.Editor', verbose_name="Автор", on_delete=models.CASCADE)
+    author = models.ForeignKey('user.User', verbose_name="Автор", on_delete=models.CASCADE)
     photo = models.URLField(verbose_name='Фото')
     dateofadd = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
