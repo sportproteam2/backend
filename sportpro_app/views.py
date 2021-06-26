@@ -172,7 +172,7 @@ class FederationiewSet(viewsets.ModelViewSet):
 
 
 class PlayersViewSet(viewsets.ModelViewSet):
-    permission_classes = [CoachAccessPermission]
+    permission_classes = [AllowAny, CoachAccessPermission]
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
 
