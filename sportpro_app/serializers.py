@@ -2,7 +2,7 @@ from django.db.models import query
 from rest_framework import serializers
 from .models import *
 from user.models import *
-from user.serializers import UserSerializer
+from user.serializers import TrainerSerializer, UserSerializer
 
 
 class SportCategorySerializer(serializers.ModelSerializer):
@@ -78,8 +78,8 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
-        trainer = validated_data.pop('author')
-        obj, _ = UserSerializer.objects.get_or_create(name=trainer.get('name'))
+        trainer = validated_data.pop('trainer')
+        obj, _ = TrainerSerializer.objects.get_or_create(name=trainer.get('name'))
         validated_data["trainer"] = obj
         return super().create(validated_data)
 
