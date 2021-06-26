@@ -172,7 +172,7 @@ class FederationiewSet(viewsets.ModelViewSet):
 
 
 class PlayersViewSet(viewsets.ModelViewSet):
-    permission_classes = [AllowAny, CoachAccessPermission]
+    # permission_classes = [AllowAny, CoachAccessPermission]
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
 
@@ -215,7 +215,7 @@ class PlayersViewSet(viewsets.ModelViewSet):
 
 
 class EventViewSet(viewsets.ModelViewSet):
-    permission_classes = [AdminAccessPermission]
+    # permission_classes = [AdminAccessPermission]
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
@@ -255,7 +255,7 @@ class EventViewSet(viewsets.ModelViewSet):
 
 
 class MatchesViewSet(viewsets.ModelViewSet):
-    permission_classes = [AdminAccessPermission, JudgeAccessPermission]
+    # permission_classes = [AdminAccessPermission, JudgeAccessPermission]
     queryset = Matches.objects.all()
     serializer_class = MatchesSerializer
 
