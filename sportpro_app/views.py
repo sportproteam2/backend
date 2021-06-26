@@ -5,7 +5,7 @@ from django.http import Http404
 from rest_framework import status, viewsets, generics
 from .models import *
 from .serializers import *
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .permissions import *
 
 
@@ -129,7 +129,7 @@ class SportViewSet(viewsets.ModelViewSet):
 
 
 class FederationiewSet(viewsets.ModelViewSet):
-    permission_classes = [AdminAccessPermission]
+    permission_classes = [AllowAny, AdminAccessPermission]
     queryset = Federation.objects.all()
     serializer_class = FederationSerializer
 
