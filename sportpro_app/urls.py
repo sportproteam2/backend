@@ -14,3 +14,5 @@ router.register("api/matches", views.MatchesViewSet)
 router.register("api/sportcategory", views.SportCategoryViewSet)
 
 urlpatterns = router.urls
+
+

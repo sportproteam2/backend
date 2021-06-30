@@ -103,9 +103,9 @@ class SportViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Sport.objects.all()
-        sportcategory_id = self.request.query_params.get('sportcategory')
-        if sportcategory_id is not None:
-            queryset = queryset.filter(sportcategory=sportcategory_id)
+        category_id = self.request.query_params.get('category')
+        if category_id is not None:
+            queryset = queryset.filter(category=category_id)
         return queryset
 
 
