@@ -7,7 +7,6 @@ from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from django.db.models.fields.related import OneToOneField 
 import jwt
-from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -119,7 +118,7 @@ class Trainer(models.Model):
     is_approved = models.BooleanField(default=False, verbose_name='Одобрен')
 
     def __str__(self):
-        return self.user.name
+        return f'{self.user.name} {self.user.surname}'
 
     class Meta:
         verbose_name = _("Тренер")

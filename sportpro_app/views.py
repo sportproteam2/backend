@@ -6,6 +6,7 @@ from rest_framework import status, viewsets, generics
 from .models import *
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import *
 
 
@@ -30,6 +31,13 @@ class NewsViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated, EditorAccessPermission]
     queryset = News.objects.all()
     serializer_class = NewsSerializer
+
+    def get_queryset(self):
+        queryset = News.objects.all()
+        sport_id = self.request.query_params.get('sport')
+        if sport_id is not None:
+            queryset = queryset.filter(sport=sport_id)
+        return queryset
 
 
 # class NewsDetail(APIView):
@@ -93,6 +101,13 @@ class SportViewSet(viewsets.ModelViewSet):
     queryset = Sport.objects.all()
     serializer_class = SportSerializer
 
+    def get_queryset(self):
+        queryset = Sport.objects.all()
+        sportcategory_id = self.request.query_params.get('sportcategory')
+        if sportcategory_id is not None:
+            queryset = queryset.filter(sportcategory=sportcategory_id)
+        return queryset
+
 
 # class FederationsAPIView(APIView):
 #     def get(self, request):
@@ -132,6 +147,15 @@ class FederationiewSet(viewsets.ModelViewSet):
     # permission_classes = [AllowAny, AdminAccessPermission]
     queryset = Federation.objects.all()
     serializer_class = FederationSerializer
+
+    def get_queryset(self):
+        queryset = Federation.objects.all()
+        sport_id = self.request.query_params.get('sport')
+        if sport_id is not None:
+            queryset = queryset.filter(sport=sport_id)
+        return queryset
+
+
 
 
 # class PlayersAPIView(APIView):
@@ -175,6 +199,22 @@ class PlayersViewSet(viewsets.ModelViewSet):
     # permission_classes = [AllowAny, CoachAccessPermission]
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['sport', 'sex', 'weight', 'playercategory']
+
+    # def get_queryset(self):
+    #     queryset = Player.objects.all()
+    #     sport_id = self.request.query_params.get('sport')
+    #     if sport_id is not None:
+    #         queryset = queryset.filter(sport=sport_id)
+    #     return queryset
+
+    # def getplayerfromsex(self):
+    #     queryset = Player.objects.all()
+    #     sex_id = self.request.query_params.get('sex')
+    #     if sex_id is not None:
+    #         queryset = queryset.filter(sex=sex_id)
+    #     return queryset
 
 
 # class EventsAPIView(APIView):
@@ -219,6 +259,13 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+    def get_queryset(self):
+        queryset = Event.objects.all()
+        sport_id = self.request.query_params.get('sport')
+        if sport_id is not None:
+            queryset = queryset.filter(sport=sport_id)
+        return queryset
+
 
 # class MatchesAPIView(APIView):
 #     def get(self, request):
@@ -258,6 +305,13 @@ class MatchesViewSet(viewsets.ModelViewSet):
     # permission_classes = [AdminAccessPermission, JudgeAccessPermission]
     queryset = Matches.objects.all()
     serializer_class = MatchesSerializer
+
+    def get_queryset(self):
+        queryset = Matches.objects.all()
+        event_id = self.request.query_params.get('event')
+        if event_id is not None:
+            queryset = queryset.filter(sport=event_id)
+        return queryset
 
 
 class SportCategoryViewSet(viewsets.ModelViewSet):

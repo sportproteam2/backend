@@ -51,7 +51,7 @@ class News(models.Model):
 class Federation(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название", unique=True)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
-    admin = models.ForeignKey('user.Admin', on_delete=models.CASCADE, verbose_name='Админ Федерации')
+    admin = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Админ Федерации')
     logo = models.URLField(verbose_name='Логотип')
     description = models.CharField(max_length=255, verbose_name='О нас')
     contacts = models.CharField(max_length=255, verbose_name='Контакты')
@@ -67,14 +67,21 @@ class Federation(models.Model):
 class PlayerCategory(models.Model):
     name = CharField(max_length=255, verbose_name='Категория Спортсмена', unique=True)
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Категория Спортсмена")
+        verbose_name_plural = _("Категории Спортсменов")
+
 
 class Player(models.Model):
     name = models.CharField(max_length = 255, verbose_name='Имя')
     surname = models.CharField(max_length = 255, verbose_name='Фамилия')
     age = models.IntegerField(verbose_name='Возраст', default=18)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
-    trainer = models.ForeignKey('user.Trainer', on_delete=models.CASCADE, verbose_name='Тренер')
-    sex = models.CharField(max_length=255, verbose_name='Пол', unique=True, default='Мужчина')
+    trainer = models.ForeignKey('user.User', on_delete = models.CASCADE, verbose_name='Тренер')
+    sex = models.CharField(max_length=255, verbose_name='Пол')
     weight = models.IntegerField(verbose_name='Весовая категория', default=60)
     playercategory = models.ForeignKey(PlayerCategory, on_delete=models.CASCADE, verbose_name='Категория спортсмена', default=1)
     photo = models.URLField(verbose_name='Фото')
@@ -90,7 +97,7 @@ class Player(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=150, verbose_name='Название')
-    creator = models.ForeignKey('user.Admin', on_delete=models.CASCADE, verbose_name='Организатор')
+    creator = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Организатор')
     date = models.DateTimeField(verbose_name='Дата проведения')
     location = models.CharField(max_length=255, verbose_name='Место проведения')
     player = models.ManyToManyField(Player, verbose_name='Спортсмены')
@@ -115,6 +122,7 @@ class Matches(models.Model):
     player1_score = models.IntegerField(verbose_name='Счет первого спортсмена', default=0)
     player2_score = models.IntegerField(verbose_name='Счет второго спортсмена', default=0)
     winner = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name='Победитель', related_name='winner')
+    judge = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Судья')
     
 
 
