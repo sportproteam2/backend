@@ -317,3 +317,8 @@ class MatchesViewSet(viewsets.ModelViewSet):
 class SportCategoryViewSet(viewsets.ModelViewSet):
     queryset = SportCategory.objects.all()
     serializer_class = SportCategorySerializer
+
+
+class RegisterPlayersView(generics.CreateAPIView):
+    queryset = PlayerToEvent.objects.all()
+    serializer_class = PlayerToEventSerializer

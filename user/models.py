@@ -48,9 +48,13 @@ class UserManager(BaseUserManager):
 class Role(models.Model):
 
     name = models.CharField(max_length=255, verbose_name='Роль', unique = True)
+    
     class Meta:
         verbose_name = _("Роль")
         verbose_name_plural = _("Роли")
+
+    def __str__(self):
+        return self.name
 
 
 class User(AbstractBaseUser, PermissionsMixin):

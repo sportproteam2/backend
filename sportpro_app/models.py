@@ -100,7 +100,7 @@ class Event(models.Model):
     creator = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Организатор')
     date = models.DateTimeField(verbose_name='Дата проведения')
     location = models.CharField(max_length=255, verbose_name='Место проведения')
-    player = models.ManyToManyField(Player, verbose_name='Спортсмены')
+    players = models.ManyToManyField(Player, verbose_name='Спортсмены', through='PlayerToEvent')
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
     description = models.CharField(max_length=255, verbose_name='Описание')
     photo = models.URLField(verbose_name='Фото')
@@ -123,6 +123,7 @@ class Matches(models.Model):
     player2_score = models.IntegerField(verbose_name='Счет второго спортсмена', default=0)
     winner = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name='Победитель', related_name='winner')
     judge = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Судья')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name='Соревнование', related_name='matches')
     
 
 
@@ -132,3 +133,9 @@ class Matches(models.Model):
     class Meta:
         verbose_name = _("Матч")
         verbose_name_plural = _("Матчи")
+
+
+class PlayerToEvent(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name='Спортсмен')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name='Соревнование')
+    is_approved = models.BooleanField("Is approved", default=False)

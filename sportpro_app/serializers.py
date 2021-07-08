@@ -79,7 +79,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         trainer = validated_data.pop('trainer')
-        obj, _ = TrainerSerializer.objects.get_or_create(name=trainer.get('name'))
+        obj, _ = User.objects.get(id=trainer.get('id'))
         validated_data["trainer"] = obj
         return super().create(validated_data)
 
@@ -115,3 +115,23 @@ class MatchesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Matches
         fields = ['id', 'player1', 'player2', 'date', 'player1_score', 'player2_score', 'winner', 'judge']
+        
+
+
+
+class PlayerToEventSerializer(serializers.ModelSerializer):
+    players = serializers.ListField(child=serializers.IntegerField(), write_only=True)
+    event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
+
+    class Meta:
+        model = PlayerToEvent
+        fields = ['id', 'players', 'event']
+
+    def create(self, validated_data):
+        player_data = validated_data.pop('players')
+        event = validated_data.get('event')
+
+        for player_id in player_data:
+            player = Player.objects.get(id=player_id)
+            instance = PlayerToEvent.objects.create(event=event, player = player)
+        return instance

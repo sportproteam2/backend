@@ -13,6 +13,8 @@ router.register("api/event", views.EventViewSet)
 router.register("api/matches", views.MatchesViewSet)
 router.register("api/sportcategory", views.SportCategoryViewSet)
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('api/registerplayers', views.RegisterPlayersView.as_view())
+] + router.urls
 
 
