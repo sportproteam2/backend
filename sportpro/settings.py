@@ -10,15 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 # from corsheaders.defaults import default_methods
+from django.conf import settings
+from firebase_admin import credentials
+import firebase_admin
 import os
 import environ
 # Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
 import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+env = environ.Env()
+environ.Env.read_env()
 
 
 # Quick-start development settings - unsuitable for production
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -86,18 +90,17 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     'PUT',
 # ]
 
-# CORS_ALLOW_HEADERS  =  [ 
-#     'accept' , 
-#     'accept-encoding' , 
-#     'authorization' , 
-#     'content-type' , 
-#     'dnt' , 
-#     'origin' , 
-#     'user-agent' , 
-#     'x-csrftoken' , 
-#     'x-requested-with' , 
+# CORS_ALLOW_HEADERS  =  [
+#     'accept' ,
+#     'accept-encoding' ,
+#     'authorization' ,
+#     'content-type' ,
+#     'dnt' ,
+#     'origin' ,
+#     'user-agent' ,
+#     'x-csrftoken' ,
+#     'x-requested-with' ,
 # ]
-
 
 
 ROOT_URLCONF = 'sportpro.urls'
@@ -107,7 +110,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -138,21 +141,10 @@ AUTH_USER_MODEL = 'user.User'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('NAME'),                      
-        'USER': env('USER'),
-        'PASSWORD': env('PASSWORD'),
-        'HOST': env('HOST'),
-        'PORT': env('PORT'),
-    }
+    'default': env.db(),
 }
-# DATABASES = {
-#     'default': env.db(),
-# }
-
-
 
 
 # Password validation
@@ -198,12 +190,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 django_heroku.settings(locals())
 
-
-import firebase_admin
-import os
-
-from firebase_admin import credentials
-from django.conf import settings
 
 cred = credentials.Certificate(
     os.path.join(settings.BASE_DIR, "sportpro-c5b31-firebase-adminsdk-rvvh7-1a28b7dc64.json"))

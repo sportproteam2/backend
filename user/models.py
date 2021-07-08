@@ -59,7 +59,7 @@ class Role(models.Model):
 
 class User(AbstractBaseUser, PermissionsMixin):
 
-    username = models.CharField(db_index=True, max_length=255, unique=True, verbose_name='Никнейм')
+    username = None
     name = models.CharField(max_length = 255, verbose_name="Имя")
     surname = models.CharField(max_length = 255, verbose_name='Фамилия')
     role = models.ForeignKey(Role, on_delete = models.SET_NULL, related_name='role', verbose_name="Роль", null=True)

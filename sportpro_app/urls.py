@@ -14,7 +14,8 @@ router.register("api/matches", views.MatchesViewSet)
 router.register("api/sportcategory", views.SportCategoryViewSet)
 
 urlpatterns = [
-    path('api/registerplayers', views.RegisterPlayersView.as_view())
+    path('api/registerplayers', views.RegisterPlayersView.as_view()),
+    # path('api/match/<int:pk>/set_score/', views.SetScoreView.as_view())
 ] + router.urls
 
 

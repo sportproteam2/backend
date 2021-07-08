@@ -1,0 +1,9 @@
+{% extends 'admin/change_list.html' %}
+
+{% block object-tools %}
+{{ block.super }}
+    <form action="{% url 'admin:seed_players' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Создать игроков"/>
+    </form>
+{% endblock %}
