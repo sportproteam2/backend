@@ -335,3 +335,4 @@ class SetScoreView(generics.UpdateAPIView):
         serializer.save()
         MatchesService.post_save(self.kwargs.get("pk"))
         # MatchesService.define_winner(self.kwargs.get("pk"))
+

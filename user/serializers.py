@@ -1,7 +1,8 @@
 from sportpro_app.models import Federation
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import Admin, Editor, Judge, Trainer, User, Role
+from sportpro_app.serializers import *
+from .models import Admin, Editor, Judge, Region, Trainer, User, Role
 from rest_framework.authtoken.models import Token
 from firebase_admin import auth
 
@@ -25,7 +26,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = User
         # List all of the fields that could possibly be included in a request
         # or response, including fields specified explicitly above.
-        fields = ['name', 'surname', 'phone', 'username', 'role', 'password', 'token']
+        fields = ['name', 'surname', 'middlename', 'region', 'phone', 'sport', 'role', 'password', 'token']
 
     def create(self, validated_data):
         # Use the `create_user` method we wrote earlier to create a new user.
@@ -57,6 +58,13 @@ class LoginSerializer(serializers.Serializer):
         }
 
 
+class RegionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Region
+        fields = '__all__'
+
+
 class UserSerializer(serializers.ModelSerializer):
     """Handles serialization and deserialization of User objects."""
     password = serializers.CharField(
@@ -65,9 +73,12 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
+    region = RegionSerializer(many = False)
+    sport = SportSerializer(many = False)
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'name', 'surname', 'phone', 'role', 'password', 'age')
+        fields = ('id', 'name', 'surname', 'middlename', 'phone', 'region', 'sport' 'role', 'password')
         read_only_fields = ('token',)
 
     def update(self, instance, validated_data):

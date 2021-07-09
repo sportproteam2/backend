@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from sportpro_app.models import Sport
 from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -57,14 +58,28 @@ class Role(models.Model):
         return self.name
 
 
+class Region(models.Model):
+    
+    name = models.CharField(max_length=255, verbose_name='Область')
+
+    class Meta:
+        verbose_name = _("Область")
+        verbose_name_plural = _("Области")
+
+    def __str__(self):
+        return self.name
+
+
 class User(AbstractBaseUser, PermissionsMixin):
 
-    username = None
     name = models.CharField(max_length = 255, verbose_name="Имя")
     surname = models.CharField(max_length = 255, verbose_name='Фамилия')
+    middlename = models.CharField(max_length=255, verbose_name='Отчество')
     role = models.ForeignKey(Role, on_delete = models.SET_NULL, related_name='role', verbose_name="Роль", null=True)
     phone = models.CharField(max_length = 255, verbose_name='Номер телефона', unique=True)
-    age = models.IntegerField(verbose_name='Возраст', default=18)
+    region = models.ForeignKey(Region, on_delete = models.SET_NULL, null=True, verbose_name='Область')
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Спорт')
+    # age = models.IntegerField(verbose_name='Возраст', default=18)
     is_active = models.BooleanField(default=True, verbose_name='Активный аккаунт')
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
