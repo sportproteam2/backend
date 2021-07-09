@@ -1,3 +1,4 @@
+from sportpro_app.services import PlayerService
 from django.db.models import query
 from rest_framework import serializers
 from .models import *
@@ -34,7 +35,8 @@ class NewsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ['id', 'title', 'article', 'author', 'photo', 'dateofadd', 'sport']
+        fields = ['id', 'title', 'article',
+                  'author', 'photo', 'dateofadd', 'sport']
 
     def create(self, validated_data):
         author = validated_data.pop('author')
@@ -48,15 +50,17 @@ class NewsSerializer(serializers.ModelSerializer):
         validated_data["sport"] = obj
         return super().create(validated_data)
 
+
 class FederationSerializer(serializers.ModelSerializer):
 
     # category = SportCategorySerializer(many = False)
-    sport = SportSerializer(many = False)
-    admin = UserSerializer(many = False)
+    sport = SportSerializer(many=False)
+    admin = UserSerializer(many=False)
 
     class Meta:
         model = Federation
-        fields = ['id', 'name', 'sport', 'admin', 'logo', 'description', 'contacts']
+        fields = ['id', 'name', 'sport', 'admin',
+                  'logo', 'description', 'contacts']
 
 
 class PlayersCategorySerializer(serializers.ModelSerializer):
@@ -68,14 +72,15 @@ class PlayersCategorySerializer(serializers.ModelSerializer):
 
 class PlayerSerializer(serializers.ModelSerializer):
 
-    trainer = UserSerializer(many = False)
-    sport = SportSerializer(many = False)
-    playercategory = PlayersCategorySerializer(many = False)
+    trainer = UserSerializer(many=False)
+    sport = SportSerializer(many=False)
+    playercategory = PlayersCategorySerializer(many=False)
+    score = serializers.SerializerMethodField("get_score")
 
     class Meta:
         model = Player
-        fields = ['id', 'name', 'surname', 'age', 'sport', 'trainer', 'sex', 'weight', 'playercategory', 'photo', 'dateofadd']
-
+        fields = ['id', 'name', 'surname', 'age', 'sport', 'trainer',
+                  'sex', 'weight', 'playercategory', 'photo', 'dateofadd', 'score']
 
     def create(self, validated_data):
         trainer = validated_data.pop('trainer')
@@ -83,15 +88,19 @@ class PlayerSerializer(serializers.ModelSerializer):
         validated_data["trainer"] = obj
         return super().create(validated_data)
 
+    def get_score(self, obj):
+        return PlayerService.get_score(obj)
+
 
 class EventSerializer(serializers.ModelSerializer):
 
-    sport = SportSerializer(many = False)
-    creator = UserSerializer(many = False)
+    sport = SportSerializer(many=False)
+    creator = UserSerializer(many=False)
 
     class Meta:
         model = Event
-        fields = ['id', 'name', 'creator', 'date', 'location', 'sport', 'description', 'photo', 'result']
+        fields = ['id', 'name', 'creator', 'date', 'location',
+                  'sport', 'description', 'photo', 'result']
 
     def create(self, validated_data):
         player_data = validated_data.pop('player')
@@ -107,20 +116,35 @@ class EventSerializer(serializers.ModelSerializer):
 
 class MatchesSerializer(serializers.ModelSerializer):
 
-    player1 = PlayerSerializer(many = False)
-    player2 = PlayerSerializer(many = False)
-    winner = PlayerSerializer(many = False)
-    judge = UserSerializer(many = False)
+    player1 = PlayerSerializer(many=False)
+    player2 = PlayerSerializer(many=False)
+    winner = PlayerSerializer(many=False)
+    judge = UserSerializer(many=False)
 
     class Meta:
         model = Matches
-        fields = ['id', 'player1', 'player2', 'date', 'player1_score', 'player2_score', 'winner', 'judge']
-        
+        fields = ['id', 'player1', 'player2', 'date',
+                  'player1_score', 'player2_score', 'winner', 'judge']
 
+
+class GridSerializer(serializers.ModelSerializer):
+    # match = MatchesSerializer()
+
+    class Meta:
+        model = Grid
+        fields = '__all__'
+
+
+class SetScoreSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Matches
+        fields = ['id', 'player1_score', 'player2_score']
 
 
 class PlayerToEventSerializer(serializers.ModelSerializer):
-    players = serializers.ListField(child=serializers.IntegerField(), write_only=True)
+    players = serializers.ListField(
+        child=serializers.IntegerField(), write_only=True)
     event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
 
     class Meta:
@@ -133,5 +157,5 @@ class PlayerToEventSerializer(serializers.ModelSerializer):
 
         for player_id in player_data:
             player = Player.objects.get(id=player_id)
-            instance = PlayerToEvent.objects.create(event=event, player = player)
+            instance = PlayerToEvent.objects.create(event=event, player=player)
         return instance

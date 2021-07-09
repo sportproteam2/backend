@@ -39,6 +39,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -194,3 +195,5 @@ django_heroku.settings(locals())
 cred = credentials.Certificate(
     os.path.join(settings.BASE_DIR, "sportpro-c5b31-firebase-adminsdk-rvvh7-1a28b7dc64.json"))
 firebase_admin.initialize_app(cred)
+
+JET_SIDE_MENU_COMPACT = True

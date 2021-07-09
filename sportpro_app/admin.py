@@ -1,14 +1,13 @@
 from django.contrib import admin
 from .models import *
 from django.http import HttpResponseRedirect
-from .services import EventService, PlayerService
+from .services import EventService, MatchesService, PlayerService
 from django.urls import path
 
 
 admin.site.register(News)
 admin.site.register(Sport)
 admin.site.register(Federation)
-admin.site.register(Matches)
 admin.site.register(SportCategory)
 admin.site.register(PlayerCategory)
 
@@ -21,6 +20,19 @@ def distribute_players(modeladmin, request, queryset):
     EventService.distribute_players(queryset)
 
 
+def generate_random_score(modeladmin, request, queryset):
+    MatchesService.random_score(queryset)
+
+
+@admin.register(Matches)
+class MatchesAdmin(admin.ModelAdmin):
+    list_display = ["id", "number", "player1", "player2",
+                    "player1_score", "player2_score", "winner"]
+    list_filter = ["grid__stage"]
+    actions = [generate_random_score]
+
+
+
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
@@ -29,7 +41,7 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(PlayerToEvent)
 class PlayerToEventAdmin(admin.ModelAdmin):
-    list_display = ["id", "event", "player", "is_approved"]
+    list_display = ["id", "event", "player", "is_approved", "final_score"]
     actions = [approve]
 
 
@@ -55,4 +67,4 @@ class PlayerAdmin(admin.ModelAdmin):
 
 @admin.register(Grid)
 class GridAdmin(admin.ModelAdmin):
-    list_display = ['id', 'stage', 'number', 'match']
+    list_display = ['id', 'stage', 'event']

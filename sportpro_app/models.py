@@ -121,8 +121,6 @@ class Event(models.Model):
     photo = models.URLField(verbose_name='Фото')
     result = models.CharField(max_length=255, verbose_name='Результат')
 
-    matches = models.ManyToManyField(
-        "sportpro_app.Matches", verbose_name=_("Matches"), through="Grid")
     # is_finished = models.BooleanField(default=False)
 
     def __str__(self):
@@ -134,15 +132,12 @@ class Event(models.Model):
 
 
 class Grid(models.Model):
-    number = models.PositiveIntegerField(_("Number"))
     stage = models.CharField(_("Stage"), max_length=10)
     event = models.ForeignKey("sportpro_app.Event", verbose_name=_(
-        "Event"), on_delete=models.CASCADE)
-    match = models.ForeignKey("sportpro_app.Matches", verbose_name=_(
-        "Match"), on_delete=models.CASCADE)
+        "Event"), related_name="grids", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.stage}: {self.match.player1} - {self.match.player2}"
+        return f"{self.stage}"
 
     class Meta:
         ordering = ['-id']
@@ -151,6 +146,9 @@ class Grid(models.Model):
 
 
 class Matches(models.Model):
+    number = models.PositiveIntegerField(_("Number"))
+    grid = models.ForeignKey("sportpro_app.Grid", verbose_name=_(
+        "Сетка"), related_name="matches", on_delete=models.SET_NULL, null=True)
     player1 = models.ForeignKey(Player, on_delete=models.CASCADE,
                                 verbose_name='Первый Спортсмен', related_name='player1')
     player2 = models.ForeignKey(Player, on_delete=models.CASCADE,
@@ -179,3 +177,4 @@ class PlayerToEvent(models.Model):
     event = models.ForeignKey(
         Event, on_delete=models.CASCADE, verbose_name='Соревнование')
     is_approved = models.BooleanField("Is approved", default=False)
+    final_score = models.PositiveSmallIntegerField(_("Итоговые очки"), default=0)

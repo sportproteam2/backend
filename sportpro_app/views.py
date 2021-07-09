@@ -1,3 +1,4 @@
+from sportpro_app.services import MatchesService
 from django.db.models.manager import Manager
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,7 +9,6 @@ from .serializers import *
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import *
-
 
 
 # class NewsAPIView(APIView):
@@ -156,8 +156,6 @@ class FederationiewSet(viewsets.ModelViewSet):
         return queryset
 
 
-
-
 # class PlayersAPIView(APIView):
 #     def get(self, request):
 #         player = Player.objects.all()
@@ -300,8 +298,13 @@ class EventViewSet(viewsets.ModelViewSet):
 #             return Response(serializer.data)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class GridViewSet(viewsets.ReadOnlyModelViewSet):
 
-class MatchesViewSet(viewsets.ModelViewSet):
+    queryset = Grid.objects.all()
+    serializer_class = GridSerializer
+
+
+class MatchesViewSet(viewsets.ReadOnlyModelViewSet):
     # permission_classes = [AdminAccessPermission, JudgeAccessPermission]
     queryset = Matches.objects.all()
     serializer_class = MatchesSerializer
@@ -322,3 +325,13 @@ class SportCategoryViewSet(viewsets.ModelViewSet):
 class RegisterPlayersView(generics.CreateAPIView):
     queryset = PlayerToEvent.objects.all()
     serializer_class = PlayerToEventSerializer
+
+
+class SetScoreView(generics.UpdateAPIView):
+    queryset = Matches.objects.all()
+    serializer_class = MatchesSerializer
+
+    def perform_update(self, serializer):
+        serializer.save()
+        MatchesService.post_save(self.kwargs.get("pk"))
+        # MatchesService.define_winner(self.kwargs.get("pk"))

@@ -19,8 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('admin/', admin.site.urls),
     path('', include('user.urls')),
     path('', include('sportpro_app.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
