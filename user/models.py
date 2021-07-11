@@ -78,6 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     role = models.ForeignKey(Role, on_delete = models.SET_NULL, related_name='role', verbose_name="Роль", null=True)
     phone = models.CharField(max_length = 255, verbose_name='Номер телефона', unique=True)
     region = models.ForeignKey(Region, on_delete = models.SET_NULL, null=True, verbose_name='Область')
+    organization = models.CharField(max_length=255, verbose_name='Организация')
     sport = models.ForeignKey(Sport, on_delete = models.SET_NULL, null=True, verbose_name='Спорт')
     is_active = models.BooleanField(default=True, verbose_name='Активный аккаунт')
     is_staff = models.BooleanField(default=False)
