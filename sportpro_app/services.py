@@ -24,22 +24,22 @@ sex = {
 
 class PlayerService:
 
-    # @staticmethod
-    # def seed_players(size: int):
-    #     for n in range(size):
-    #         pc = PlayerCategory.objects.get(name="Junior")
-    #         player = Player.objects.create(
-    #             name=f.first_name(),
-    #             surname=f.last_name(),
-    #             age=random.randint(20, 40),
-    #             sport=sport,
-    #             trainer=coach,
-    #             sex=sex.get(random.randint(1, 2)),
-    #             weight=random.randint(60, 90),
-    #             playercategory=pc
-    #         )
-    #         if player:
-    #             print(n, ": OK")
+    @staticmethod
+    def seed_players(size: int):
+        for n in range(size):
+            pc = PlayerCategory.objects.get(name="Junior")
+            player = Player.objects.create(
+                name=f.first_name(),
+                surname=f.last_name(),
+                age=random.randint(20, 40),
+                sport=sport,
+                trainer=coach,
+                sex=sex.get(random.randint(1, 2)),
+                weight=random.randint(60, 90),
+                playercategory=pc
+            )
+            if player:
+                print(n, ": OK")
 
     @staticmethod
     def get_score(obj: Player):
