@@ -3,8 +3,7 @@ from django.db.models import query
 from rest_framework import serializers
 from .models import *
 from user.models import *
-from user.serializers import TrainerSerializer, UserSerializer
-
+from user.serializers import UserSerializer
 
 class SportCategorySerializer(serializers.ModelSerializer):
 
@@ -19,7 +18,7 @@ class SportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sport
-        fields = ['id', 'name', 'description', 'category']
+        fields = ['id', 'name', 'description', 'category', 'photo', 'short_desc']
 
     def create(self, validated_data):
         category = validated_data.pop('category')
@@ -36,7 +35,7 @@ class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = ['id', 'title', 'article',
-                  'author', 'photo', 'dateofadd', 'sport']
+                  'author', 'photo', 'dateofadd', 'sport', 'tags']
 
     def create(self, validated_data):
         author = validated_data.pop('author')
@@ -143,8 +142,7 @@ class SetScoreSerializer(serializers.ModelSerializer):
 
 
 class PlayerToEventSerializer(serializers.ModelSerializer):
-    players = serializers.ListField(
-        child=serializers.IntegerField(), write_only=True)
+    players = serializers.ListField(child=serializers.IntegerField(), write_only=True)
     event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
 
     class Meta:

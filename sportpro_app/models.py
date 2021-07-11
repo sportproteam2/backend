@@ -18,11 +18,9 @@ class SportCategory(models.Model):
 
 
 class Sport(models.Model):
-    name = models.CharField(
-        max_length=100, verbose_name='Название', unique=True)
+    name = models.CharField(max_length=100, verbose_name='Название', unique=True)
     description = models.CharField(max_length=255, verbose_name='Описание')
-    category = models.ForeignKey(
-        SportCategory, on_delete=models.CASCADE, verbose_name='Категория спорта')
+    category = models.ForeignKey(SportCategory, on_delete=models.CASCADE, verbose_name='Категория спорта')
     photo = models.URLField(verbose_name='Фото')
     short_desc = models.CharField(max_length=100, verbose_name='Краткое описание')
 

@@ -1,7 +1,6 @@
 from sportpro_app.models import Federation
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from sportpro_app.serializers import *
 from .models import Admin, Editor, Judge, Region, Trainer, User, Role
 from rest_framework.authtoken.models import Token
 from firebase_admin import auth
@@ -74,11 +73,11 @@ class UserSerializer(serializers.ModelSerializer):
     )
 
     region = RegionSerializer(many = False)
-    sport = SportSerializer(many = False)
+    # sport = SportSerializer(many = False)
 
     class Meta:
         model = User
-        fields = ('id', 'name', 'surname', 'middlename', 'phone', 'region', 'sport' 'role', 'password')
+        fields = ('id', 'name', 'surname', 'middlename', 'phone', 'region', 'sport', 'role', 'password')
         read_only_fields = ('token',)
 
     def update(self, instance, validated_data):

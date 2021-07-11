@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework import status, viewsets, generics
 from .models import *
-from .serializers import *
+from sportpro_app.serializers import *
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import *
