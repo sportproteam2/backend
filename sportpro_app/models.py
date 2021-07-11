@@ -23,6 +23,8 @@ class Sport(models.Model):
     description = models.CharField(max_length=255, verbose_name='Описание')
     category = models.ForeignKey(
         SportCategory, on_delete=models.CASCADE, verbose_name='Категория спорта')
+    photo = models.URLField(verbose_name='Фото')
+    short_desc = models.CharField(max_length=100, verbose_name='Краткое описание')
 
     def __str__(self):
         return self.name
@@ -42,6 +44,7 @@ class News(models.Model):
         auto_now_add=True, verbose_name='Дата добавления')
     sport = models.ForeignKey(
         Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
+    tags = models.CharField(max_length=50, verbose_name='Тэги')
 
     def __str__(self):
         return self.title
