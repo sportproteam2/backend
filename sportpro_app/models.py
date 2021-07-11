@@ -120,7 +120,7 @@ class Event(models.Model):
         Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
     description = models.CharField(max_length=255, verbose_name='Описание')
     photo = models.URLField(verbose_name='Фото')
-    result = models.CharField(max_length=255, verbose_name='Результат')
+    # result = models.CharField(max_length=255, verbose_name='Результат')
 
     # is_finished = models.BooleanField(default=False)
 
