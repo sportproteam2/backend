@@ -71,39 +71,6 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 
 
-# CORS_ALLOWED_ORIGINS = [
-#     "https://example.com",
-#     "https://sub.example.com",
-#     "http://localhost:8080",
-#     "http://127.0.0.1:9000"
-# ]
-
-# CORS_ALLOWED_ORIGIN_REGEXES = [
-#     r"^https://\w+\.api\.com$",
-# ]
-
-# CORS_ALLOW_METHODS = [
-#     'DELETE',
-#     'GET',
-#     'OPTIONS',
-#     'PATCH',
-#     'POST',
-#     'PUT',
-# ]
-
-# CORS_ALLOW_HEADERS  =  [
-#     'accept' ,
-#     'accept-encoding' ,
-#     'authorization' ,
-#     'content-type' ,
-#     'dnt' ,
-#     'origin' ,
-#     'user-agent' ,
-#     'x-csrftoken' ,
-#     'x-requested-with' ,
-# ]
-
-
 ROOT_URLCONF = 'sportpro.urls'
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
@@ -142,20 +109,20 @@ AUTH_USER_MODEL = 'user.User'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('NAME'),                      
-        'USER': env('USER'),
-        'PASSWORD': env('PASSWORD'),
-        'HOST': env('HOST'),
-        'PORT': env('PORT'),
-    }
-}
-
 # DATABASES = {
-#     'default': env.db(),
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env('NAME'),                      
+#         'USER': env('USER'),
+#         'PASSWORD': env('PASSWORD'),
+#         'HOST': env('HOST'),
+#         'PORT': env('PORT'),
+#     }
 # }
+
+DATABASES = {
+    'default': env.db(),
+}
 
 
 # Password validation
