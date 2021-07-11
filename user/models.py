@@ -79,6 +79,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length = 255, verbose_name='Номер телефона', unique=True)
     region = models.ForeignKey(Region, on_delete = models.SET_NULL, null=True, verbose_name='Область')
     organization = models.CharField(max_length=255, verbose_name='Организация')
+    document = models.URLField(verbose_name='Документ')
     sport = models.ForeignKey(Sport, on_delete = models.SET_NULL, null=True, verbose_name='Спорт')
     is_active = models.BooleanField(default=True, verbose_name='Активный аккаунт')
     is_staff = models.BooleanField(default=False)
