@@ -64,6 +64,18 @@ class RegionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class RoleSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField("get_name")
+    name = serializers.ReadOnlyField(source='get_name_display')
+
+    class Meta:
+        model = Role
+        fields = ['id', 'name']
+
+    def get_name(self):
+        return self.get_name_display
+
+
 class UserSerializer(serializers.ModelSerializer):
     """Handles serialization and deserialization of User objects."""
     password = serializers.CharField(
@@ -73,6 +85,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
 
     region = RegionSerializer(many = False)
+    role = RoleSerializer(many=False)
     # sport = SportSerializer(many = False)
 
     class Meta:
@@ -95,17 +108,6 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
 
         return instance
-
-class RoleSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField("get_name")
-    name = serializers.ReadOnlyField(source='get_name_display')
-
-    class Meta:
-        model = Role
-        fields = ['id', 'name']
-
-    def get_name(self):
-        return self.get_name_display
 
 
 class AdminSerializer(serializers.ModelSerializer):
