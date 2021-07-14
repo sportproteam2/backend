@@ -70,6 +70,9 @@ class EventService:
             stage=stage,
             event=event,
         )
+
+        raise Exception(judge)  
+
         while players:
 
             first = Player.objects.get(id=cls.choose_and_remove(players))
