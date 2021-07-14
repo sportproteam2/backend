@@ -11,9 +11,9 @@ import random
 Faker.seed(0)
 
 f = Faker()
-# sport = Sport.objects.last()
-# coach = User.objects.filter(role__name="Coach").last()
-# judge = User.objects.filter(role__name="referee").last()
+sport = Sport.objects.last()
+coach = User.objects.filter(role__name="Coach").last()
+judge = User.objects.filter(role__name="referee").last()
 
 
 sex = {
