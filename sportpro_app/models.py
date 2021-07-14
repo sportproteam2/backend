@@ -162,7 +162,7 @@ class Matches(models.Model):
     winner = models.ForeignKey(
         Player, on_delete=models.SET_NULL, verbose_name='Победитель', related_name='winner', null=True)
     judge = models.ForeignKey(
-        'user.User', on_delete=models.CASCADE, verbose_name='Судья')
+        'user.User', on_delete=models.SET_NULL, null=True, verbose_name='Судья')
 
     def __str__(self):
         return f'{self.player1} - {self.player2}'
