@@ -111,20 +111,20 @@ AUTH_USER_MODEL = 'user.User'
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env('NAME'),                      
-#         'USER': env('USER'),
-#         'PASSWORD': env('PASSWORD'),
-#         'HOST': env('HOST'),
-#         'PORT': env('PORT'),
-#     }
-# }
-
 DATABASES = {
-    'default': env.db(),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('NAME'),                      
+        'USER': env('USER'),
+        'PASSWORD': env('PASSWORD'),
+        'HOST': env('HOST'),
+        'PORT': env('PORT'),
+    }
 }
+
+# DATABASES = {
+#     'default': env.db(),
+# }
 
 
 # Password validation

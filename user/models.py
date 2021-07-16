@@ -48,7 +48,7 @@ class UserManager(BaseUserManager):
 
 class Role(models.Model):
 
-    name = models.CharField(max_length=255, verbose_name='Роль', unique = True)
+    name = models.CharField(max_length=255, verbose_name='Роль')
     
     class Meta:
         verbose_name = _("Роль")
@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length = 255, verbose_name="Имя")
     surname = models.CharField(max_length = 255, verbose_name='Фамилия')
     middlename = models.CharField(max_length=255, verbose_name='Отчество')
-    role = models.ForeignKey(Role, on_delete = models.SET_NULL, related_name='role', verbose_name="Роль", null=True)
+    role = models.ForeignKey(Role, on_delete = models.SET_NULL, verbose_name="Роль", null=True)
     phone = models.CharField(max_length = 255, verbose_name='Номер телефона', unique=True)
     region = models.ForeignKey(Region, on_delete = models.SET_NULL, null=True, verbose_name='Область')
     organization = models.CharField(max_length=255, verbose_name='Организация', default='Глаз тигра', blank=True)

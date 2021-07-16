@@ -27,7 +27,7 @@ def generate_random_score(modeladmin, request, queryset):
 @admin.register(Matches)
 class MatchesAdmin(admin.ModelAdmin):
     list_display = ["id", "number", "player1", "player2",
-                    "player1_score", "player2_score", "winner"]
+                    "player1_score", "player2_score", "winner", "judge"]
     list_filter = ["grid__stage"]
     actions = [generate_random_score]
 

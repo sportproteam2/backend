@@ -1,9 +1,10 @@
-from sportpro_app.models import Federation
+from sportpro_app.models import Federation, Sport
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from .models import Admin, Editor, Judge, Region, Trainer, User, Role
 from rest_framework.authtoken.models import Token
 from firebase_admin import auth
+# from sportpro_app.serializers import SportSerializer
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -65,15 +66,11 @@ class RegionSerializer(serializers.ModelSerializer):
 
 
 class RoleSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField("get_name")
-    name = serializers.ReadOnlyField(source='get_name_display')
 
     class Meta:
         model = Role
         fields = ['id', 'name']
 
-    def get_name(self):
-        return self.get_name_display
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -84,29 +81,21 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
-    region = RegionSerializer(many = False)
-    role = RoleSerializer(many=False)
-    # sport = SportSerializer(many = False)
+    region = serializers.PrimaryKeyRelatedField(queryset=Region.objects.all())
+    sport = serializers.PrimaryKeyRelatedField(queryset=Sport.objects.all())
+    
 
     class Meta:
         model = User
-        fields = ('id', 'name', 'surname', 'middlename', 'phone', 'region', 'sport', 'role', 'password')
+        fields = ('id', 'name', 'surname', 'middlename', 'phone', 'region', 'organization', 'sport', 'password', 'document')
         read_only_fields = ('token',)
 
     def update(self, instance, validated_data):
-        """Performs an update on a User."""
         password = validated_data.pop('password', None)
-
         for (key, value) in validated_data.items():
-            # For the keys remaining in `validated_data`, we will set them on
-            # the current `User` instance one at a time.
             setattr(instance, key, value)
-
         if password is not None:
-            # `.set_password()`  handles all
-            # of the security stuff that we shouldn't be concerned with.
             instance.set_password(password)
-
         return instance
 
 

@@ -71,7 +71,7 @@ class EventService:
             event=event,
         )
 
-        raise Exception(judge)  
+        # raise Exception(judge)  
 
         while players:
 
