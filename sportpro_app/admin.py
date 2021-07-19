@@ -10,6 +10,8 @@ admin.site.register(Sport)
 admin.site.register(Federation)
 admin.site.register(SportCategory)
 admin.site.register(PlayerCategory)
+admin.site.register(PhotoForGallery)
+admin.site.register(Gallery)
 
 
 def approve(modeladmin, request, queryset):

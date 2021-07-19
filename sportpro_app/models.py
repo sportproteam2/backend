@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import CharField
-from django.db.models.fields.related import OneToOneField
+from django.db.models.fields.related import ManyToManyField, OneToOneField
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -142,8 +142,8 @@ class Grid(models.Model):
 
     class Meta:
         ordering = ['-id']
-        verbose_name = 'Grid'
-        verbose_name_plural = 'Grids'
+        verbose_name = 'Сетка'
+        verbose_name_plural = 'Сетки'
 
 
 class Matches(models.Model):
@@ -179,3 +179,22 @@ class PlayerToEvent(models.Model):
         Event, on_delete=models.CASCADE, verbose_name='Соревнование')
     is_approved = models.BooleanField("Is approved", default=False)
     final_score = models.PositiveSmallIntegerField(_("Итоговые очки"), default=0)
+
+
+    def __str__(self):
+        return self.player
+
+    class Meta:
+        verbose_name = _("Спортсмен на соревнования")
+        verbose_name_plural = _("Спортсмены на соревнования")
+
+
+class PhotoForGallery(models.Model):
+    photo = models.URLField(verbose_name='Фотография')
+    dateofadd = models.DateTimeField(verbose_name='Дата добавления', auto_now_add=True)
+
+
+class Gallery(models.Model):
+    federation = models.ForeignKey(Federation, on_delete=models.CASCADE, verbose_name='Федерация')
+    tags = models.CharField(max_length=100, verbose_name='Тэги')
+    photo = models.ManyToManyField(PhotoForGallery, verbose_name='Фотографии')

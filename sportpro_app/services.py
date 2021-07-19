@@ -89,8 +89,7 @@ class EventService:
 
     @classmethod
     def get_players_in_stage(cls, stage: str):
-        return list(cls.model.objects.filter(
-            grids__stage=stage).values_list("grids__matches__winner", flat=True))
+        return list(cls.model.objects.filter(grids__stage=stage).values_list("grids__matches__winner", flat=True))
 
     @classmethod
     def get_next_stage(cls, stage):
@@ -115,8 +114,7 @@ class EventService:
             cls.give_points_to_players(grid.matches.last())
             return
         new_grid = Grid.objects.create(stage=next_stage, event=grid.event)
-        matches_numbers = list(grid.matches.values_list(
-            "number", flat=True).order_by("number"))
+        matches_numbers = list(grid.matches.values_list("number", flat=True).order_by("number"))
         groupped_matches_numbers = MatchesService.grouper(matches_numbers)
         for number, matches in enumerate(groupped_matches_numbers, start=1):
             first, second = [Matches.objects.filter(grid=grid).get(

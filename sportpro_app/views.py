@@ -336,3 +336,8 @@ class SetScoreView(generics.UpdateAPIView):
         MatchesService.post_save(self.kwargs.get("pk"))
         # MatchesService.define_winner(self.kwargs.get("pk"))
 
+class GalleryView(viewsets.ModelViewSet):
+    queryset = Gallery.objects.all()
+    serializer_class = GallerySerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['federation', 'tags']

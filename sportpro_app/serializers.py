@@ -157,3 +157,19 @@ class PlayerToEventSerializer(serializers.ModelSerializer):
             player = Player.objects.get(id=player_id)
             instance = PlayerToEvent.objects.create(event=event, player=player)
         return instance
+
+
+class PhotoForGallerySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PhotoForGallery
+        fields = ['id', 'photo', 'dateofadd']
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    photo = PhotoForGallerySerializer(many = True)
+    federation = FederationSerializer(many = False)
+
+    class Meta:
+        model = Gallery
+        fields = ['id', 'federation', 'tags', 'photo']
