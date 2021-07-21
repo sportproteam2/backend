@@ -1,3 +1,4 @@
+from rest_framework.fields import ReadOnlyField
 from sportpro_app.services import PlayerService
 from django.db.models import query
 from rest_framework import serializers
@@ -75,11 +76,11 @@ class PlayerSerializer(serializers.ModelSerializer):
     sport = SportSerializer(many=False)
     playercategory = PlayersCategorySerializer(many=False)
     score = serializers.SerializerMethodField("get_score")
+    organization = serializers.ReadOnlyField(source="trainer.organization")
 
     class Meta:
         model = Player
-        fields = ['id', 'name', 'surname', 'age', 'sport', 'trainer',
-                  'sex', 'weight', 'playercategory', 'photo', 'dateofadd', 'score']
+        fields = ['id', 'name', 'surname', 'age', 'sport', 'trainer', 'organization', 'sex', 'weight', 'playercategory', 'photo', 'dateofadd', 'score']
 
     def create(self, validated_data):
         trainer = validated_data.pop('trainer')

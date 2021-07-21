@@ -87,17 +87,13 @@ class Player(models.Model):
     name = models.CharField(max_length=255, verbose_name='Имя')
     surname = models.CharField(max_length=255, verbose_name='Фамилия')
     age = models.IntegerField(verbose_name='Возраст', default=18)
-    sport = models.ForeignKey(
-        Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
-    trainer = models.ForeignKey(
-        'user.User', on_delete=models.CASCADE, verbose_name='Тренер')
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
+    trainer = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Тренер')
     sex = models.CharField(max_length=255, verbose_name='Пол')
     weight = models.IntegerField(verbose_name='Весовая категория', default=60)
-    playercategory = models.ForeignKey(
-        PlayerCategory, on_delete=models.CASCADE, verbose_name='Категория спортсмена', default=1)
+    playercategory = models.ForeignKey(PlayerCategory, on_delete=models.CASCADE, verbose_name='Категория спортсмена', default=1)
     photo = models.URLField(verbose_name='Фото', null=True)
-    dateofadd = models.DateTimeField(
-        auto_now_add=True, verbose_name='Дата добавления')
+    dateofadd = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
 
     def __str__(self):
         return self.surname
