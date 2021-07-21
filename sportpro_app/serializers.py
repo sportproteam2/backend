@@ -32,11 +32,10 @@ class NewsSerializer(serializers.ModelSerializer):
 
     author = UserSerializer(many=False)
     sport = SportSerializer(many=False)
-    judge = UserSerializer(many=False)
 
     class Meta:
         model = News
-        fields = ['id', 'title', 'article', 'author', 'judge', 'photo', 'dateofadd', 'sport', 'tags']
+        fields = ['id', 'title', 'article', 'author', 'photo', 'dateofadd', 'sport', 'tags']
 
     def create(self, validated_data):
         author = validated_data.pop('author')
