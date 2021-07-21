@@ -126,3 +126,9 @@ class GalleryView(viewsets.ModelViewSet):
     serializer_class = GallerySerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['federation', 'tags']
+
+
+class PlayerCategoryView(viewsets.ModelViewSet):
+    # permission_classes = [IsAuthenticated, EditorAccessPermission]
+    queryset = PlayerCategory.objects.all()
+    serializer_class = PlayersCategorySerializer
