@@ -9,7 +9,7 @@ from sportpro_app.serializers import *
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import *
-from pusher_push_notifications import PushNotifications
+
 
 
 class NewsViewSet(viewsets.ModelViewSet):
