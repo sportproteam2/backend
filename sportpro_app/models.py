@@ -130,8 +130,7 @@ class Event(models.Model):
 
 class Grid(models.Model):
     stage = models.CharField(_("Stage"), max_length=10)
-    event = models.ForeignKey("sportpro_app.Event", verbose_name=_(
-        "Event"), related_name="grids", on_delete=models.CASCADE)
+    event = models.ForeignKey("sportpro_app.Event", verbose_name=_("Event"), related_name="grids", on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.stage}"

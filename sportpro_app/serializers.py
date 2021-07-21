@@ -128,11 +128,12 @@ class MatchesSerializer(serializers.ModelSerializer):
 
 
 class GridSerializer(serializers.ModelSerializer):
-    # match = MatchesSerializer()
+
+    matches = MatchesSerializer(many=True)
 
     class Meta:
         model = Grid
-        fields = '__all__'
+        fields = ['stage', 'event', 'matches']
 
 
 class SetScoreSerializer(serializers.ModelSerializer):
