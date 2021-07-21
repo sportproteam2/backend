@@ -189,8 +189,20 @@ class PhotoForGallery(models.Model):
     photo = models.URLField(verbose_name='Фотография')
     dateofadd = models.DateTimeField(verbose_name='Дата добавления', auto_now_add=True)
 
+    class Meta:
+        verbose_name = _("Фото для Галереи")
+        verbose_name_plural = _("Фото для Галереи")
+
+
 
 class Gallery(models.Model):
     federation = models.ForeignKey(Federation, on_delete=models.CASCADE, verbose_name='Федерация')
     tags = models.CharField(max_length=100, verbose_name='Тэги')
     photo = models.ManyToManyField(PhotoForGallery, verbose_name='Фотографии')
+
+    def __str__(self):
+        return f'Фотографии с {self.federation}'
+
+    class Meta:
+        verbose_name = _("Галерея")
+        verbose_name_plural = _("Галереи")

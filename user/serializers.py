@@ -81,13 +81,15 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
-    region = serializers.PrimaryKeyRelatedField(queryset=Region.objects.all())
+    region = RegionSerializer(many=False)
+    role = RoleSerializer(many=False)
     sport = serializers.PrimaryKeyRelatedField(queryset=Sport.objects.all())
     
 
     class Meta:
         model = User
-        fields = ('id', 'name', 'surname', 'middlename', 'phone', 'region', 'organization', 'sport', 'password', 'document')
+        fields = ('id', 'name', 'surname', 'middlename', 'phone', 'role', 'region', 'organization', 'sport', 'password', 'document')
+        depth = 1
         read_only_fields = ('token',)
 
     def update(self, instance, validated_data):
