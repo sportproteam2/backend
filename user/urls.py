@@ -13,6 +13,7 @@ router = routers.DefaultRouter()
 router.register("api/user", views.UserViewSet)
 router.register("api/role", views.RoleViewSet)
 router.register("api/region", views.RegionView)
+router.register("api/trainers", views.TrainerView)
 # router.register("api/user/reg", views.RegistrationAPIView)
 # router.register("api/user/log", views.LoginAPIView)
 
