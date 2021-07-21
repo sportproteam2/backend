@@ -4,7 +4,7 @@ from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .renderers import UserJSONRenderer
-from user.serializers import RegionSerializer, UserSerializer, RoleSerializer, RegistrationSerializer, LoginSerializer
+from user.serializers import RegionSerializer, TrainerSerializer, UserSerializer, RoleSerializer, RegistrationSerializer, LoginSerializer
 from .models import *
 
 
@@ -72,3 +72,9 @@ class RegionView(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
     queryset = Region.objects.all()
     serializer_class = RegionSerializer
+
+
+class TrainerView(viewsets.ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+    queryset = Trainer.objects.all()
+    serializer_class = TrainerSerializer
