@@ -32,7 +32,7 @@ class NewsSerializer(serializers.ModelSerializer):
 
     author = UserSerializer(many=False)
     sport = SportSerializer(many=False)
-    Judge = UserSerializer(many=False)
+    judge = UserSerializer(many=False)
 
     class Meta:
         model = News
