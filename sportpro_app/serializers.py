@@ -71,9 +71,9 @@ class PlayersCategorySerializer(serializers.ModelSerializer):
 
 class PlayerSerializer(serializers.ModelSerializer):
 
-    trainer = UserSerializer(many=False)
-    sport = SportSerializer(many=False)
-    playercategory = PlayersCategorySerializer(many=False)
+    trainer = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    sport = serializers.PrimaryKeyRelatedField(queryset=Sport.objects.all())
+    playercategory = serializers.PrimaryKeyRelatedField(queryset=PlayerCategory.objects.all())
     score = serializers.SerializerMethodField("get_score")
     organization = serializers.ReadOnlyField(source="trainer.organization")
 
