@@ -117,8 +117,7 @@ class Event(models.Model):
         max_length=255, verbose_name='Место проведения')
     players = models.ManyToManyField(
         Player, verbose_name='Спортсмены', through='PlayerToEvent')
-    sport = models.ForeignKey(
-        Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
     description = models.CharField(max_length=255, verbose_name='Описание')
     photo = models.URLField(verbose_name='Фото')
     status = models.CharField(max_length=255, verbose_name='Статус', default='Регистрация открыта')
