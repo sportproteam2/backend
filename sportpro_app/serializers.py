@@ -79,7 +79,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = ['id', 'name', 'surname', 'age', 'sport', 'trainer', 'organization', 'sex', 'weight', 'playercategory', 'photo', 'dateofadd', 'score']
+        fields = ['id', 'name', 'surname', 'middlename', 'age', 'sport', 'trainer', 'organization', 'sex', 'weight', 'playercategory', 'photo', 'dateofadd', 'score']
 
     def create(self, validated_data):
         trainer = validated_data.pop('trainer')

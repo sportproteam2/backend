@@ -89,6 +89,7 @@ class PlayerCategory(models.Model):
 class Player(models.Model):
     name = models.CharField(max_length=255, verbose_name='Имя')
     surname = models.CharField(max_length=255, verbose_name='Фамилия')
+    middlename = models.CharField(max_length=255, verbose_name='Отчество', default=' ')
     age = models.IntegerField(verbose_name='Возраст', default=18)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
     trainer = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Тренер')
