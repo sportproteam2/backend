@@ -3,7 +3,7 @@ from django.db.models.deletion import CASCADE
 from django.db.models.fields import CharField
 from django.db.models.fields.related import ManyToManyField, OneToOneField
 from django.utils.translation import ugettext_lazy as _
-from datetime import datetime  
+from datetime import datetime, date
 
 
 class SportCategory(models.Model):
@@ -90,7 +90,8 @@ class Player(models.Model):
     name = models.CharField(max_length=255, verbose_name='Имя')
     surname = models.CharField(max_length=255, verbose_name='Фамилия')
     middlename = models.CharField(max_length=255, verbose_name='Отчество', default=' ')
-    age = models.IntegerField(verbose_name='Возраст', default=18)
+    # age = models.IntegerField(verbose_name='Возраст', default=18)
+    dateofbirth = models.DateField(default=datetime.now, verbose_name='Дата рождения')
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
     contact = models.CharField(max_length=255, verbose_name='Контакты', default=' ')
     trainer = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Тренер')
@@ -99,6 +100,7 @@ class Player(models.Model):
     playercategory = models.ForeignKey(PlayerCategory, on_delete=models.CASCADE, verbose_name='Категория спортсмена', default=1)
     photo = models.URLField(verbose_name='Фото', null=True)
     dateofadd = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
+    license = models.CharField(verbose_name='Лицензия', max_length=255, default=' ')
 
     def __str__(self):
         return self.surname
@@ -107,22 +109,29 @@ class Player(models.Model):
         verbose_name = _("Спортсмен")
         verbose_name_plural = _("Спортсмены")
 
+    def calculate_age(self):
+        bd = self.dateofbirth
+        if bd:
+            td = date.today()
+            return td.year - bd.year - ((td.month, td.day) < (bd.month, bd.day))
+
+class EventCategory(models.Model):
+    name = models.CharField(verbose_name='Категория', max_length=255)
+
 
 class Event(models.Model):
     name = models.CharField(max_length=150, verbose_name='Название')
-    creator = models.ForeignKey(
-        'user.User', on_delete=models.CASCADE, verbose_name='Организатор')
+    creator = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Организатор')
     dateofstart = models.DateTimeField(verbose_name='Дата начала', default=datetime.now)
     dateofend = models.DateTimeField(verbose_name='Дата окончания', default=datetime.now)
     startofWeighing = models.DateTimeField(default=datetime.now)
-    location = models.CharField(
-        max_length=255, verbose_name='Место проведения')
-    players = models.ManyToManyField(
-        Player, verbose_name='Спортсмены', through='PlayerToEvent')
+    location = models.CharField(max_length=255, verbose_name='Место проведения')
+    players = models.ManyToManyField(Player, verbose_name='Спортсмены', through='PlayerToEvent')
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
     description = models.CharField(max_length=255, verbose_name='Описание')
     photo = models.URLField(verbose_name='Фото')
     status = models.CharField(max_length=255, verbose_name='Статус', default='Регистрация открыта')
+    eventcategory = models.ForeignKey(EventCategory, on_delete=models.SET_NULL, null=True, verbose_name='Категория соревнований')
     protocol = models.URLField(verbose_name='Протокол', null=True)
     # result = models.CharField(max_length=255, verbose_name='Результат')
 

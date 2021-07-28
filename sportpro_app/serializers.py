@@ -5,6 +5,7 @@ from rest_framework import serializers
 from .models import *
 from user.models import *
 from user.serializers import UserSerializer
+from datetime import date
 
 class SportCategorySerializer(serializers.ModelSerializer):
 
@@ -76,20 +77,27 @@ class PlayerSerializer(serializers.ModelSerializer):
     playercategory = serializers.PrimaryKeyRelatedField(queryset=PlayerCategory.objects.all())
     score = serializers.SerializerMethodField("get_score")
     organization = serializers.ReadOnlyField(source="trainer.organization")
+    # region = serializers.ReadOnlyField(source="trainer.region")
+    age = serializers.ReadOnlyField(source="calculate_age")
 
     class Meta:
         model = Player
-        fields = ['id', 'name', 'surname', 'middlename', 'age', 'sport', 'trainer', 'organization', 'sex', 'weight', 'playercategory', 'photo', 'contact', 'dateofadd', 'score']
+        fields = ['id', 'name', 'surname', 'middlename', 'dateofbirth', 'age', 'sport', 'trainer', 'organization', 'sex', 'weight', 'playercategory', 'photo', 'contact', 'dateofadd', 'score']
 
-    def create(self, validated_data):
-        trainer = validated_data.pop('trainer')
-        obj, _ = User.objects.get(id=trainer.get('id'))
-        validated_data["trainer"] = obj
-        return super().create(validated_data)
+    # def create(self, validated_data):
+    #     trainer = validated_data.pop('trainer')
+    #     obj, _ = User.objects.get(id=trainer.get('id'))
+    #     validated_data["trainer"] = obj
+    #     return super().create(validated_data)
 
     def get_score(self, obj):
         return PlayerService.get_score(obj)
 
+class EventCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EventCategory
+        fields = '__all__'
 
 class EventSerializer(serializers.ModelSerializer):
 

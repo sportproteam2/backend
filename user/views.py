@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from .renderers import UserJSONRenderer
 from user.serializers import RegionSerializer, TrainerSerializer, UserSerializer, RoleSerializer, RegistrationSerializer, LoginSerializer
 from .models import *
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class RegistrationAPIView(APIView):
@@ -66,6 +67,8 @@ class UserViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['role']
     
 
 class RegionView(viewsets.ModelViewSet):

@@ -25,6 +25,12 @@ class NewsViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+class EventCategoryViewSet(viewsets.ModelViewSet):
+    # permission_classes = [IsAuthenticated, EditorAccessPermission]
+    queryset = EventCategory.objects.all()
+    serializer_class = EventCategorySerializer
+
+
 class SportViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated, CoachAccessPermission]
     queryset = Sport.objects.all()
@@ -74,13 +80,15 @@ class EventViewSet(viewsets.ModelViewSet):
     # permission_classes = [AdminAccessPermission]
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['sport', 'players', 'eventcategory']
 
-    def get_queryset(self):
-        queryset = Event.objects.all()
-        sport_id = self.request.query_params.get('sport')
-        if sport_id is not None:
-            queryset = queryset.filter(sport=sport_id)
-        return queryset
+    # def get_queryset(self):
+    #     queryset = Event.objects.all()
+    #     sport_id = self.request.query_params.get('sport')
+    #     if sport_id is not None:
+    #         queryset = queryset.filter(sport=sport_id)
+    #     return queryset
 
 
 class GridViewSet(viewsets.ReadOnlyModelViewSet):
