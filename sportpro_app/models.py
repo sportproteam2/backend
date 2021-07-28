@@ -92,6 +92,7 @@ class Player(models.Model):
     middlename = models.CharField(max_length=255, verbose_name='Отчество', default=' ')
     age = models.IntegerField(verbose_name='Возраст', default=18)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
+    contact = models.CharField(max_length=255, verbose_name='Контакты', default=' ')
     trainer = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Тренер')
     sex = models.CharField(max_length=255, verbose_name='Пол')
     weight = models.IntegerField(verbose_name='Весовая категория', default=60)
