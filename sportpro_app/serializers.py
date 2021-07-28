@@ -55,11 +55,11 @@ class FederationSerializer(serializers.ModelSerializer):
     # category = SportCategorySerializer(many = False)
     sport = SportSerializer(many=False)
     admin = UserSerializer(many=False)
+    judge = UserSerializer(many=False)
 
     class Meta:
         model = Federation
-        fields = ['id', 'name', 'sport', 'admin',
-                  'logo', 'description', 'contacts']
+        fields = ['id', 'name', 'sport', 'admin', 'logo', 'description', 'contacts', 'address', 'judge']
 
 
 class PlayersCategorySerializer(serializers.ModelSerializer):

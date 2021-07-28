@@ -3,6 +3,7 @@ from django.db.models.deletion import CASCADE
 from django.db.models.fields import CharField
 from django.db.models.fields.related import ManyToManyField, OneToOneField
 from django.utils.translation import ugettext_lazy as _
+from datetime import datetime  
 
 
 class SportCategory(models.Model):
@@ -62,6 +63,8 @@ class Federation(models.Model):
     logo = models.URLField(verbose_name='Логотип')
     description = models.CharField(max_length=255, verbose_name='О нас')
     contacts = models.CharField(max_length=255, verbose_name='Контакты')
+    address = models.CharField(max_length=255, verbose_name='Адрес', default='228')
+    judge = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='sportpro_app.Federation.judge+', verbose_name='Представитель Судейской Коллегии', default=1)
 
     def __str__(self):
         return self.name
@@ -107,7 +110,9 @@ class Event(models.Model):
     name = models.CharField(max_length=150, verbose_name='Название')
     creator = models.ForeignKey(
         'user.User', on_delete=models.CASCADE, verbose_name='Организатор')
-    date = models.DateTimeField(verbose_name='Дата проведения')
+    dateofstart = models.DateTimeField(verbose_name='Дата начала', default=datetime.now)
+    dateofend = models.DateTimeField(verbose_name='Дата окончания', default=datetime.now)
+    startofWeighing = models.DateTimeField(default=datetime.now)
     location = models.CharField(
         max_length=255, verbose_name='Место проведения')
     players = models.ManyToManyField(
@@ -116,6 +121,8 @@ class Event(models.Model):
         Sport, on_delete=models.CASCADE, verbose_name='Вид спорта')
     description = models.CharField(max_length=255, verbose_name='Описание')
     photo = models.URLField(verbose_name='Фото')
+    status = models.CharField(max_length=255, verbose_name='Статус', default='Регистрация открыта')
+    protocol = models.URLField(verbose_name='Протокол', null=True)
     # result = models.CharField(max_length=255, verbose_name='Результат')
 
     # is_finished = models.BooleanField(default=False)

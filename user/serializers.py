@@ -75,20 +75,20 @@ class RoleSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     """Handles serialization and deserialization of User objects."""
-    password = serializers.CharField(
-        max_length=128,
-        min_length=8,
-        write_only=True
-    )
+    # password = serializers.CharField(
+    #     max_length=128,
+    #     min_length=8,
+    #     write_only=True
+    # )
 
-    region = RegionSerializer(many=False)
-    role = RoleSerializer(many=False)
+    region = serializers.PrimaryKeyRelatedField(queryset=Region.objects.all())
+    role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all())
     sport = serializers.PrimaryKeyRelatedField(queryset=Sport.objects.all())
     
 
     class Meta:
         model = User
-        fields = ('id', 'name', 'surname', 'middlename', 'phone', 'role', 'region', 'organization', 'sport', 'password', 'document')
+        fields = ('id', 'name', 'surname', 'middlename', 'phone', 'role', 'region', 'organization', 'sport', 'document')
         depth = 1
         read_only_fields = ('token',)
 
