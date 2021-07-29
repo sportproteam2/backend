@@ -14,6 +14,7 @@ from django.conf import settings
 from firebase_admin import credentials
 import firebase_admin
 import os
+from datetime import timedelta
 import environ
 # Initialise environment variables
 import django_heroku
@@ -102,6 +103,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
+}
 
 AUTH_USER_MODEL = 'user.User'
 

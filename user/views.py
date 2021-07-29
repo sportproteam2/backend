@@ -62,14 +62,46 @@ class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
 
+class UsersAPIView(APIView):
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many = True)
+        return Response(serializer.data)
 
-class UserViewSet(viewsets.ModelViewSet):
-    # permission_classes = [IsAuthenticated]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['role']
-    
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UsersDetail(APIView):
+    def get(self, request, pk, format=None):
+        users = User.objects.get(pk=pk)
+        serializer = UserSerializer(users)
+        return Response(serializer.data)
+
+    def delete(self, request, pk, format=None):
+        users = User.objects.get(pk=pk)
+        users.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def put(self, request, pk, format=None):
+        users = User.objects.get(pk=pk)
+        serializer = serializers.UsersSerializer(users, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class UserViewSet(viewsets.ModelViewSet):
+#     # permission_classes = [IsAuthenticated]
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     filter_backends = [DjangoFilterBackend]
+#     filterset_fields = ['role']
+
 
 class RegionView(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
