@@ -103,13 +103,14 @@ class EventSerializer(serializers.ModelSerializer):
 
     sport = SportSerializer(many=False)
     creator = UserSerializer(many=False)
+    players = PlayerSerializer(many = True)
 
     class Meta:
         model = Event
-        fields = ['id', 'name', 'creator', 'dateofstart', 'dateofend', 'startofWeighing', 'location', 'sport', 'description', 'photo', 'protocol', 'status']
+        fields = ['id', 'name', 'creator', 'dateofstart', 'dateofend', 'startofWeighing', 'location', 'sport', 'players', 'description', 'photo', 'protocol', 'status']
 
     def create(self, validated_data):
-        player_data = validated_data.pop('player')
+        player_data = validated_data.pop('players')
 
         player = Player.objects.get_or_create(**player_data)
         event = Event.objects.create(player=player[0], **validated_data)
@@ -118,6 +119,8 @@ class EventSerializer(serializers.ModelSerializer):
             Player.objects.create(player=player, **players)
 
         return event
+
+
 
 
 class MatchesSerializer(serializers.ModelSerializer):
