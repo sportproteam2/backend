@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from .models import Admin, Editor, Judge, Region, Trainer, User, Role
 from rest_framework.authtoken.models import Token
 from firebase_admin import auth
-# from sportpro_app.serializers import SportSerializer
+# from sportpro_app.serializers import SportSerializers
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -84,6 +84,7 @@ class UserSerializer(serializers.ModelSerializer):
     region = serializers.PrimaryKeyRelatedField(queryset=Region.objects.all())
     role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all())
     sport = serializers.PrimaryKeyRelatedField(queryset=Sport.objects.all())
+    # sport = SportSerializer()
     
 
     class Meta:
