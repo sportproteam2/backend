@@ -20,6 +20,7 @@ router.register("api/trainers", views.TrainerView)
 
 urlpatterns = [
     path('api/user/', views.UsersAPIView.as_view()),
+    path('api/userbyrole/<int:pk>/', views.UserByRoles.as_view()),
     path('api/user/<int:pk>', views.UsersDetail.as_view()),
     path('api/user/reg/', views.RegistrationAPIView.as_view()),
     path('api/user/log', views.LoginAPIView.as_view()),

@@ -116,20 +116,20 @@ AUTH_USER_MODEL = 'user.User'
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('NAME'),                      
-        'USER': env('USER'),
-        'PASSWORD': env('PASSWORD'),
-        'HOST': env('HOST'),
-        'PORT': env('PORT'),
-    }
-}
-
 # DATABASES = {
-#     'default': env.db(),
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env('NAME'),                      
+#         'USER': env('USER'),
+#         'PASSWORD': env('PASSWORD'),
+#         'HOST': env('HOST'),
+#         'PORT': env('PORT'),
+#     }
 # }
+
+DATABASES = {
+    'default': env.db(),
+}
 
 
 # Password validation
@@ -177,7 +177,7 @@ django_heroku.settings(locals())
 
 
 cred = credentials.Certificate(
-    os.path.join(settings.BASE_DIR, "sportpro-c5b31-firebase-adminsdk-rvvh7-1a28b7dc64.json"))
+    os.path.join(settings.BASE_DIR, "sport-pro-693d8-firebase-adminsdk-evr39-dc42183c08.json")) # sportpro-c5b31-firebase-adminsdk-rvvh7-1a28b7dc64
 firebase_admin.initialize_app(cred)
 
 JET_SIDE_MENU_COMPACT = True

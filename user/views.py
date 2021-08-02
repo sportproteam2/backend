@@ -1,4 +1,4 @@
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.response import Response
@@ -62,6 +62,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
 
+
 class UsersAPIView(APIView):
     def get(self, request):
         users = User.objects.all()
@@ -74,6 +75,13 @@ class UsersAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # def get_queryset(self):
+    #     queryset = User.objects.all()
+    #     role_id = self.request.query_params.get('role')
+    #     if role_id is not None:
+    #         queryset = queryset.filter(role=role_id)
+    #     return queryset
 
 
 class UsersDetail(APIView):
@@ -94,6 +102,19 @@ class UsersDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserByRoles(generics.RetrieveAPIView):
+    model = User
+    queryset = User.objects.all()
+    lookup_field = "pk"
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = User.objects.filter(role = instance.id)
+        serializer = UserSerializer(user, many = True)
+        return Response(serializer.data)
+
 
 # class UserViewSet(viewsets.ModelViewSet):
 #     # permission_classes = [IsAuthenticated]
